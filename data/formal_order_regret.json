@@ -1,0 +1,98 @@
+[
+  {
+    "dataset": "digits",
+    "interpretable": true,
+    "max_order_regret": 0.11995893450099893,
+    "mean_order_regret": 0.04857318036616594,
+    "orders": 5,
+    "replay_name": "no_replay"
+  },
+  {
+    "dataset": "digits",
+    "interpretable": true,
+    "max_order_regret": 0.09302519074470217,
+    "mean_order_regret": 0.04379039818583861,
+    "orders": 5,
+    "replay_name": "replay_16"
+  },
+  {
+    "dataset": "digits",
+    "interpretable": true,
+    "max_order_regret": 0.08252922058715761,
+    "mean_order_regret": 0.050342274989198785,
+    "orders": 5,
+    "replay_name": "replay_32"
+  },
+  {
+    "dataset": "digits",
+    "interpretable": true,
+    "max_order_regret": 0.04107840489736925,
+    "mean_order_regret": 0.021436122625509358,
+    "orders": 5,
+    "replay_name": "replay_64"
+  },
+  {
+    "dataset": "iris",
+    "interpretable": true,
+    "max_order_regret": 0.06173200546602087,
+    "mean_order_regret": 0.0225050508547181,
+    "orders": 5,
+    "replay_name": "no_replay"
+  },
+  {
+    "dataset": "iris",
+    "interpretable": true,
+    "max_order_regret": 0.06173200546602087,
+    "mean_order_regret": 0.03419885478296505,
+    "orders": 5,
+    "replay_name": "replay_16"
+  },
+  {
+    "dataset": "iris",
+    "interpretable": true,
+    "max_order_regret": 0.08191022049717711,
+    "mean_order_regret": 0.045885128267976284,
+    "orders": 5,
+    "replay_name": "replay_32"
+  },
+  {
+    "dataset": "iris",
+    "interpretable": true,
+    "max_order_regret": 0.12255613922034536,
+    "mean_order_regret": 0.07838383708247454,
+    "orders": 5,
+    "replay_name": "replay_64"
+  },
+  {
+    "dataset": "wine",
+    "interpretable": true,
+    "max_order_regret": 0.13517442743553099,
+    "mean_order_regret": 0.06683148482954238,
+    "orders": 5,
+    "replay_name": "no_replay"
+  },
+  {
+    "dataset": "wine",
+    "interpretable": true,
+    "max_order_regret": 0.11509124264646375,
+    "mean_order_regret": 0.06216346075936181,
+    "orders": 5,
+    "replay_name": "replay_16"
+  },
+  {
+    "dataset": "wine",
+    "interpretable": true,
+    "max_order_regret": 0.11476608187134507,
+    "mean_order_regret": 0.07387302910896376,
+    "orders": 5,
+    "replay_name": "replay_32"
+  },
+  {
+    "dataset": "wine",
+    "interpretable": true,
+    "max_order_regret": 0.09514174769696893,
+    "mean_order_regret": 0.06242125774129674,
+    "orders": 5,
+    "replay_name": "replay_64"
+  }
+]

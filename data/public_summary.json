@@ -1,0 +1,38 @@
+{
+  "author": "Yaowen Sun",
+  "claim_boundary": "Bounded measurement over the tested built-in datasets, fixed classifier, replay budgets, and order seeds only.",
+  "datasets": [
+    "digits",
+    "wine",
+    "iris"
+  ],
+  "headline_values": {
+    "max_order_regret": 0.13517442743553099,
+    "order_signal_count": 12,
+    "replay_signal_count": 0,
+    "strongest_replay_delta_macro_f1": 0.01258278989495476
+  },
+  "order_seeds": [
+    601,
+    733,
+    887,
+    941,
+    1013
+  ],
+  "quality_flags": {
+    "duplicate_key_count": 0,
+    "failure_count": 0
+  },
+  "replay_settings": [
+    "no_replay",
+    "replay_16",
+    "replay_32",
+    "replay_64"
+  ],
+  "row_counts": {
+    "expected_runs": 60,
+    "formal_results_rows": 60
+  },
+  "title": "Task-Order Robustness of Lightweight Continual Classifiers under Tiny Replay Budgets",
+  "year": 2026
+}
