@@ -1,4 +1,6 @@
 __pycache__/
-*.pyc
+*.py[cod]
 .DS_Store
 .pytest_cache/
+torchvision_data/
+outputs/

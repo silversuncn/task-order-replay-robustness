@@ -1,38 +1,92 @@
 {
   "author": "Yaowen Sun",
-  "claim_boundary": "Bounded measurement over the tested built-in datasets, fixed classifier, replay budgets, and order seeds only.",
-  "datasets": [
-    "digits",
-    "wine",
-    "iris"
-  ],
-  "headline_values": {
-    "max_order_regret": 0.13517442743553099,
-    "order_signal_count": 12,
-    "replay_signal_count": 0,
-    "strongest_replay_delta_macro_f1": 0.01258278989495476
+  "benchmark": "Split-MNIST",
+  "claim_boundary": "Split-MNIST finite grid with compact MLP, 10 seeds, five deterministic task orders, no universal CL claim.",
+  "environment": {
+    "batch_size": 512,
+    "cuda_version": "12.8",
+    "device": "cuda:0",
+    "epochs": 2,
+    "gpu_name": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition",
+    "test_cap_per_digit": 500,
+    "torch_version": "2.11.0+cu128",
+    "train_cap_per_digit": 1000
   },
-  "order_seeds": [
-    601,
-    733,
-    887,
-    941,
-    1013
+  "headline_values": {
+    "best_delta_vs_no_replay": 0.05893999999999999,
+    "best_forgetting_method": "ewc",
+    "best_mean_final_average_accuracy": 0.233184,
+    "best_memory_budget": 500,
+    "best_method": "experience_replay",
+    "forgetting_reduction_vs_no_replay": 0.0006700000000000039,
+    "largest_order_regret": 0.11068
+  },
+  "method_budgets": [
+    {
+      "ewc_lambda": 0.0,
+      "memory_budget": 0,
+      "method": "no_replay",
+      "use_ewc": false,
+      "use_replay": false
+    },
+    {
+      "ewc_lambda": 0.0,
+      "memory_budget": 100,
+      "method": "experience_replay",
+      "use_ewc": false,
+      "use_replay": true
+    },
+    {
+      "ewc_lambda": 0.0,
+      "memory_budget": 500,
+      "method": "experience_replay",
+      "use_ewc": false,
+      "use_replay": true
+    },
+    {
+      "ewc_lambda": 25.0,
+      "memory_budget": 0,
+      "method": "ewc",
+      "use_ewc": true,
+      "use_replay": false
+    }
+  ],
+  "order_ids": [
+    "canonical",
+    "shuffle_0",
+    "shuffle_1",
+    "shuffle_2",
+    "shuffle_3"
   ],
   "quality_flags": {
     "duplicate_key_count": 0,
-    "failure_count": 0
+    "nan_or_inf_count": 0,
+    "phase4_status": "PASS_SCIENTIFIC_GATE_ADEQUATE"
   },
-  "replay_settings": [
-    "no_replay",
-    "replay_16",
-    "replay_32",
-    "replay_64"
-  ],
+  "repository_url": "https://github.com/silversuncn/task-order-replay-robustness",
   "row_counts": {
-    "expected_runs": 60,
-    "formal_results_rows": 60
+    "expected_runs": 200,
+    "formal_metrics_rows": 200
   },
-  "title": "Task-Order Robustness of Lightweight Continual Classifiers under Tiny Replay Budgets",
+  "seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "tasks": [
+    "0/1",
+    "2/3",
+    "4/5",
+    "6/7",
+    "8/9"
+  ],
+  "title": "Task-Order Replay Robustness on Split-MNIST with Lightweight Continual MLPs",
   "year": 2026
 }

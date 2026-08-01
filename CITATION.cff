@@ -1,8 +1,8 @@
 cff-version: 1.2.0
-message: "If you use this artifact, please cite the accompanying manuscript."
-title: "Task-Order Robustness of Lightweight Continual Classifiers under Tiny Replay Budgets"
+message: "If you use this reproduction bundle, please cite it as below."
+title: "Task-Order Replay Robustness on Split-MNIST with Lightweight Continual MLPs"
 authors:
   - family-names: "Sun"
     given-names: "Yaowen"
 year: 2026
-license: MIT
+url: "https://github.com/silversuncn/task-order-replay-robustness"
