@@ -91,11 +91,10 @@ The bundled `data/` files are the archived formal-run artifacts used by the manu
 ## Citation
 
 ```bibtex
-@misc{sun2026taskorderreplayrobustness,
+@article{sun2026taskorderreplayrobustness,
   title = {Task-Order Replay Robustness on Split-MNIST with Lightweight Continual MLPs},
   author = {Sun, Yaowen},
-  year = {2026},
-  url = {https://github.com/silversuncn/task-order-replay-robustness}
+  year = {2026}
 }
 ```
 
