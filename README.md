@@ -22,7 +22,14 @@ Repository URL: https://github.com/silversuncn/task-order-replay-robustness
 |   |-- formal_summary.json
 |   |-- summary_by_method_budget.csv
 |   |-- order_sensitivity.csv
-|   `-- phase4_rebuild_analysis_result.json
+|   |-- phase4_rebuild_analysis_result.json
+|   `-- revision_experiments_20260812/
+|       |-- backward_transfer_summary.json
+|       |-- backward_transfer_retention_repair_diagnostics.json
+|       |-- fisher_variance_summary.json
+|       |-- ewc_fisher_batch_summary.json
+|       |-- budget_scaling_summary.json
+|       `-- order_effect_by_budget.json
 |-- figures/
 |   |-- method_final_accuracy.png
 |   |-- method_average_forgetting.png
@@ -30,7 +37,12 @@ Repository URL: https://github.com/silversuncn/task-order-replay-robustness
 |-- src/
 |   |-- run_split_mnist_replay_pipeline.py
 |   |-- analyze_split_mnist_replay_results.py
-|   `-- verify_public_results.py
+|   |-- verify_public_results.py
+|   `-- revision/
+|       |-- run_backward_transfer_analysis.py
+|       |-- run_fisher_variance_analysis.py
+|       |-- run_ewc_more_fisher_batches.py
+|       `-- run_extended_budget_order.py
 `-- tests/
     `-- test_public_results.py
 ```
@@ -67,6 +79,11 @@ CPU execution is sufficient for the verification script and unit tests. Re-runni
 - EWC had nearly the same mean final average accuracy as no replay: `0.174440` versus `0.174244`.
 - EWC reduced mean average forgetting by only `0.000670` versus no replay.
 - The largest task-order regret was `0.110680` for experience replay with memory budget 500.
+- Revision diagnostics separate BWT from retention instability: mean BWT is
+  negative for all tested method-budget cells, Fisher-batch expansion changes
+  EWC mean accuracy by at most `0.000016`, and an extended replay-budget grid
+  reaches mean accuracy `0.275208` at budget 1000 while preserving a best-worst
+  task-order gap of `0.177960`.
 
 These are finite-grid claims about this Split-MNIST compact-MLP setup only.
 

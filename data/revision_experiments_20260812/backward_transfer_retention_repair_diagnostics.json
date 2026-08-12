@@ -1,0 +1,84 @@
+{
+  "by_method_budget": [
+    {
+      "counts": {
+        "0.0001": 142,
+        "0.001": 143,
+        "0.01": 155,
+        "1e-08": 142
+      },
+      "mean_retention": 8695601.2905,
+      "mean_retention_excluding_tiny": 3.006,
+      "median_retention_excluding_tiny": 0.4307,
+      "memory_budget": 0,
+      "method": "ewc",
+      "n": 250,
+      "retention_unstable": true,
+      "tiny_baseline_count": 143,
+      "tiny_baseline_ratio": 0.572,
+      "valid_retention_count": 107
+    },
+    {
+      "counts": {
+        "0.0001": 109,
+        "0.001": 109,
+        "0.01": 117,
+        "1e-08": 109
+      },
+      "mean_retention": 7050803.6594,
+      "mean_retention_excluding_tiny": 6.4883,
+      "median_retention_excluding_tiny": 0.0972,
+      "memory_budget": 100,
+      "method": "experience_replay",
+      "n": 250,
+      "retention_unstable": true,
+      "tiny_baseline_count": 109,
+      "tiny_baseline_ratio": 0.436,
+      "valid_retention_count": 141
+    },
+    {
+      "counts": {
+        "0.0001": 108,
+        "0.001": 109,
+        "0.01": 114,
+        "1e-08": 108
+      },
+      "mean_retention": 11046803.4219,
+      "mean_retention_excluding_tiny": 5.2658,
+      "median_retention_excluding_tiny": 0.3356,
+      "memory_budget": 500,
+      "method": "experience_replay",
+      "n": 250,
+      "retention_unstable": true,
+      "tiny_baseline_count": 109,
+      "tiny_baseline_ratio": 0.436,
+      "valid_retention_count": 141
+    },
+    {
+      "counts": {
+        "0.0001": 143,
+        "0.001": 143,
+        "0.01": 156,
+        "1e-08": 143
+      },
+      "mean_retention": 8941201.4047,
+      "mean_retention_excluding_tiny": 3.2819,
+      "median_retention_excluding_tiny": 0.3853,
+      "memory_budget": 0,
+      "method": "no_replay",
+      "n": 250,
+      "retention_unstable": true,
+      "tiny_baseline_count": 143,
+      "tiny_baseline_ratio": 0.572,
+      "valid_retention_count": 107
+    }
+  ],
+  "global_counts": {
+    "0.0001": 502,
+    "0.001": 504,
+    "0.01": 542,
+    "1e-08": 502
+  },
+  "rows": 1000,
+  "threshold": 0.001
+}

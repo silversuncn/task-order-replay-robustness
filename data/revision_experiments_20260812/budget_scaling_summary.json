@@ -1,0 +1,56 @@
+[
+  {
+    "mean_accuracy": 0.176296,
+    "mean_forgetting": 0.333065,
+    "memory_budget": 0,
+    "n_runs": 50,
+    "order_std": 0.019138,
+    "std_accuracy": 0.057541,
+    "std_forgetting": 0.121566
+  },
+  {
+    "mean_accuracy": 0.17286,
+    "mean_forgetting": 0.383705,
+    "memory_budget": 50,
+    "n_runs": 50,
+    "order_std": 0.023577,
+    "std_accuracy": 0.061534,
+    "std_forgetting": 0.121791
+  },
+  {
+    "mean_accuracy": 0.178872,
+    "mean_forgetting": 0.395415,
+    "memory_budget": 100,
+    "n_runs": 50,
+    "order_std": 0.037724,
+    "std_accuracy": 0.06789,
+    "std_forgetting": 0.131929
+  },
+  {
+    "mean_accuracy": 0.189572,
+    "mean_forgetting": 0.39077,
+    "memory_budget": 200,
+    "n_runs": 50,
+    "order_std": 0.040136,
+    "std_accuracy": 0.070974,
+    "std_forgetting": 0.135535
+  },
+  {
+    "mean_accuracy": 0.23418,
+    "mean_forgetting": 0.35487,
+    "memory_budget": 500,
+    "n_runs": 50,
+    "order_std": 0.049205,
+    "std_accuracy": 0.078577,
+    "std_forgetting": 0.122136
+  },
+  {
+    "mean_accuracy": 0.275208,
+    "mean_forgetting": 0.35491,
+    "memory_budget": 1000,
+    "n_runs": 50,
+    "order_std": 0.07023,
+    "std_accuracy": 0.093841,
+    "std_forgetting": 0.119043
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "best_order_accuracy": 0.191,
+    "best_order_id": "canonical",
+    "gap": 0.03656,
+    "memory_budget": 0,
+    "order_effect_eliminated": false,
+    "worst_order_accuracy": 0.15444,
+    "worst_order_id": "shuffle_1"
+  },
+  {
+    "best_order_accuracy": 0.19304,
+    "best_order_id": "shuffle_0",
+    "gap": 0.0552,
+    "memory_budget": 50,
+    "order_effect_eliminated": false,
+    "worst_order_accuracy": 0.13784,
+    "worst_order_id": "shuffle_1"
+  },
+  {
+    "best_order_accuracy": 0.21394,
+    "best_order_id": "shuffle_0",
+    "gap": 0.09386,
+    "memory_budget": 100,
+    "order_effect_eliminated": false,
+    "worst_order_accuracy": 0.12008,
+    "worst_order_id": "shuffle_1"
+  },
+  {
+    "best_order_accuracy": 0.23624,
+    "best_order_id": "shuffle_0",
+    "gap": 0.1093,
+    "memory_budget": 200,
+    "order_effect_eliminated": false,
+    "worst_order_accuracy": 0.12694,
+    "worst_order_id": "shuffle_1"
+  },
+  {
+    "best_order_accuracy": 0.27572,
+    "best_order_id": "shuffle_0",
+    "gap": 0.12634,
+    "memory_budget": 500,
+    "order_effect_eliminated": false,
+    "worst_order_accuracy": 0.14938,
+    "worst_order_id": "shuffle_1"
+  },
+  {
+    "best_order_accuracy": 0.34848,
+    "best_order_id": "shuffle_3",
+    "gap": 0.17796,
+    "memory_budget": 1000,
+    "order_effect_eliminated": false,
+    "worst_order_accuracy": 0.17052,
+    "worst_order_id": "shuffle_1"
+  }
+]
