@@ -1,8 +1,0 @@
-cff-version: 1.2.0
-message: "If you use this reproduction bundle, please cite it as below."
-title: "Task-Order Replay Robustness on Split-MNIST with Lightweight Continual MLPs"
-authors:
-  - family-names: "Sun"
-    given-names: "Yaowen"
-year: 2026
-url: "https://github.com/silversuncn/task-order-replay-robustness"

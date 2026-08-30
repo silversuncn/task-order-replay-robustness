@@ -1,92 +1,171 @@
 {
-  "author": "Yaowen Sun",
-  "benchmark": "Split-MNIST",
-  "claim_boundary": "Split-MNIST finite grid with compact MLP, 10 seeds, five deterministic task orders, no universal CL claim.",
-  "environment": {
-    "batch_size": 512,
-    "cuda_version": "12.8",
-    "device": "cuda:0",
-    "epochs": 2,
-    "gpu_name": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition",
-    "test_cap_per_digit": 500,
-    "torch_version": "2.11.0+cu128",
-    "train_cap_per_digit": 1000
-  },
-  "headline_values": {
-    "best_delta_vs_no_replay": 0.05893999999999999,
-    "best_forgetting_method": "ewc",
-    "best_mean_final_average_accuracy": 0.233184,
-    "best_memory_budget": 500,
-    "best_method": "experience_replay",
-    "forgetting_reduction_vs_no_replay": 0.0006700000000000039,
-    "largest_order_regret": 0.11068
-  },
-  "method_budgets": [
-    {
-      "ewc_lambda": 0.0,
-      "memory_budget": 0,
-      "method": "no_replay",
-      "use_ewc": false,
-      "use_replay": false
-    },
-    {
-      "ewc_lambda": 0.0,
-      "memory_budget": 100,
-      "method": "experience_replay",
-      "use_ewc": false,
-      "use_replay": true
-    },
-    {
-      "ewc_lambda": 0.0,
-      "memory_budget": 500,
-      "method": "experience_replay",
-      "use_ewc": false,
-      "use_replay": true
-    },
-    {
-      "ewc_lambda": 25.0,
-      "memory_budget": 0,
-      "method": "ewc",
-      "use_ewc": true,
-      "use_replay": false
-    }
-  ],
-  "order_ids": [
-    "canonical",
-    "shuffle_0",
-    "shuffle_1",
-    "shuffle_2",
-    "shuffle_3"
-  ],
-  "quality_flags": {
-    "duplicate_key_count": 0,
-    "nan_or_inf_count": 0,
-    "phase4_status": "PASS_SCIENTIFIC_GATE_ADEQUATE"
-  },
-  "repository_url": "https://github.com/silversuncn/task-order-replay-robustness",
-  "row_counts": {
-    "expected_runs": 200,
-    "formal_metrics_rows": 200
-  },
-  "seeds": [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10
-  ],
-  "tasks": [
-    "0/1",
-    "2/3",
-    "4/5",
-    "6/7",
-    "8/9"
-  ],
   "title": "Task-Order Replay Robustness on Split-MNIST with Lightweight Continual MLPs",
-  "year": 2026
+  "authors": [
+    "Yaowen Sun",
+    "Qian Zhang",
+    "Xin Zhang"
+  ],
+  "dataset": "Split-MNIST",
+  "protocol": {
+    "selected_epochs": 10,
+    "selected_batch_size": 128,
+    "selected_ewc_lambda": 100.0,
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "train_cap_per_digit": 1000,
+    "test_cap_per_digit": 500,
+    "model_architecture": "784 -> 256 -> 128 -> 10 single-head MLP",
+    "formal_seeds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "task_orders": {
+      "canonical": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "shuffle_0": [
+        2,
+        3,
+        1,
+        0,
+        4
+      ],
+      "shuffle_1": [
+        1,
+        0,
+        2,
+        4,
+        3
+      ],
+      "shuffle_2": [
+        2,
+        3,
+        0,
+        4,
+        1
+      ],
+      "shuffle_3": [
+        1,
+        2,
+        0,
+        3,
+        4
+      ]
+    },
+    "methods": [
+      {
+        "ewc_lambda": 0.0,
+        "memory_budget": 0,
+        "method": "no_replay",
+        "use_ewc": false,
+        "use_replay": false
+      },
+      {
+        "ewc_lambda": 0.0,
+        "memory_budget": 100,
+        "method": "experience_replay",
+        "use_ewc": false,
+        "use_replay": true
+      },
+      {
+        "ewc_lambda": 0.0,
+        "memory_budget": 500,
+        "method": "experience_replay",
+        "use_ewc": false,
+        "use_replay": true
+      },
+      {
+        "ewc_lambda": 100.0,
+        "memory_budget": 0,
+        "method": "ewc",
+        "use_ewc": true,
+        "use_replay": false
+      }
+    ]
+  },
+  "row_counts": {
+    "formal_results_v2_rows": 200,
+    "bwt_task_level_v2_rows": 1000,
+    "extended_budget_v2_rows": 300,
+    "ewc_lambda_search_rows": 35
+  },
+  "data_quality": {
+    "formal_duplicate_key_count": 0,
+    "formal_failure_count": 0,
+    "task_level_duplicate_key_count": 0,
+    "extended_duplicate_key_count": 0
+  },
+  "method_ranking": {
+    "er500": {
+      "mean_final_average_accuracy": 0.5914079999999999,
+      "n_rows": 50
+    },
+    "er100": {
+      "mean_final_average_accuracy": 0.31821600000000005,
+      "n_rows": 50
+    },
+    "ewc": {
+      "mean_final_average_accuracy": 0.19642799999999996,
+      "n_rows": 50
+    },
+    "no_replay": {
+      "mean_final_average_accuracy": 0.19582400000000003,
+      "n_rows": 50
+    }
+  },
+  "selected_ewc_lambda": 100.0,
+  "ewc_lambda_selection_rule": "highest mean FAA across 1 seed x 5 orders; tie breaks to smaller lambda",
+  "pilot_learning_adequacy": {
+    "selected_epochs": 10,
+    "selected_batch_size": 128,
+    "median_A_after": 0.99,
+    "A_after_le_0_001_proportion": 0.0
+  },
+  "fisher_diagnostic": {
+    "sample_count": 2000,
+    "corrected_method": "mean(square(per-sample gradients))",
+    "comparison_method": "square(mean(batch gradients))",
+    "absolute_delta_sum": 1.6078941822052002
+  },
+  "figures": [
+    "figures/fig1_cell_faa_v2.png",
+    "figures/fig2_faa_boxplot_v2.png",
+    "figures/fig3_order_heatmap_v2.png"
+  ],
+  "public_files": [
+    "README.md",
+    "LICENSE",
+    "requirements.txt",
+    "data/README.md",
+    "data/formal_results_v2.csv",
+    "data/bwt_task_level_v2.csv",
+    "data/extended_budget_v2.csv",
+    "data/ewc_lambda_search.csv",
+    "data/formal_results_v2_config.json",
+    "data/ewc_lambda_selection.json",
+    "data/statistical_analysis_v2.json",
+    "data/fisher_empirical_vs_batch_mean_square.json",
+    "data/pilot_learning_adequacy.json",
+    "data/environment_snapshot.json",
+    "data/public_summary.json",
+    "figures/fig1_cell_faa_v2.png",
+    "figures/fig2_faa_boxplot_v2.png",
+    "figures/fig3_order_heatmap_v2.png",
+    "src/verify_public_results.py",
+    "tests/test_public_results.py",
+    "MANIFEST.txt",
+    "SHA256SUMS"
+  ]
 }

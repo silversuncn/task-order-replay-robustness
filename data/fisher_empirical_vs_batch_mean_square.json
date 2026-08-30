@@ -1,0 +1,12 @@
+{
+  "absolute_delta_max": 0.00028056048904545605,
+  "absolute_delta_sum": 1.6078941822052002,
+  "fisher_sample_count": 2000,
+  "new_mean": 9.591691195964813e-06,
+  "new_method": "mean(square(per-sample gradients))",
+  "old_mean": 1.5804200756974751e-06,
+  "old_method": "square(mean(batch gradients))",
+  "parameter": "net.0.weight",
+  "status": "PASS_FISHER_DIAGNOSTIC",
+  "task_id": 0
+}

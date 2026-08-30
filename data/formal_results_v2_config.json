@@ -1,0 +1,111 @@
+{
+  "dataset": "Split-MNIST",
+  "ewc_lambda_search_values": [
+    1,
+    5,
+    10,
+    25,
+    50,
+    100,
+    500
+  ],
+  "extended_budget_grid": [
+    0,
+    50,
+    100,
+    200,
+    500,
+    1000
+  ],
+  "fisher_method": "empirical_mean_of_per_sample_squared_gradients",
+  "fisher_sample_count_policy": "current task training set for every EWC anchor; no subsampling",
+  "formal_seeds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "learning_rate": 0.001,
+  "methods": [
+    {
+      "ewc_lambda": 0.0,
+      "memory_budget": 0,
+      "method": "no_replay",
+      "use_ewc": false,
+      "use_replay": false
+    },
+    {
+      "ewc_lambda": 0.0,
+      "memory_budget": 100,
+      "method": "experience_replay",
+      "use_ewc": false,
+      "use_replay": true
+    },
+    {
+      "ewc_lambda": 0.0,
+      "memory_budget": 500,
+      "method": "experience_replay",
+      "use_ewc": false,
+      "use_replay": true
+    },
+    {
+      "ewc_lambda": 100.0,
+      "memory_budget": 0,
+      "method": "ewc",
+      "use_ewc": true,
+      "use_replay": false
+    }
+  ],
+  "mnist_download": false,
+  "model_architecture": "784 -> 256 -> 128 -> 10 single-head MLP",
+  "optimizer": "Adam",
+  "selected_batch_size": 128,
+  "selected_epochs": 10,
+  "selected_ewc_lambda": 100.0,
+  "status": "PASS_CONFIG",
+  "task_orders": {
+    "canonical": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "shuffle_0": [
+      2,
+      3,
+      1,
+      0,
+      4
+    ],
+    "shuffle_1": [
+      1,
+      0,
+      2,
+      4,
+      3
+    ],
+    "shuffle_2": [
+      2,
+      3,
+      0,
+      4,
+      1
+    ],
+    "shuffle_3": [
+      1,
+      2,
+      0,
+      3,
+      4
+    ]
+  },
+  "test_cap_per_digit": 500,
+  "train_cap_per_digit": 1000
+}

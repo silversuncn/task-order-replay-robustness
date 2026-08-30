@@ -6,11 +6,12 @@ import json
 import math
 from collections import defaultdict
 from pathlib import Path
-from statistics import mean, stdev
+from statistics import mean
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
+FIGURES = ROOT / "figures"
 
 EXPECTED_SEEDS = set(range(1, 11))
 EXPECTED_ORDERS = {"canonical", "shuffle_0", "shuffle_1", "shuffle_2", "shuffle_3"}
@@ -20,6 +21,18 @@ EXPECTED_METHOD_BUDGETS = {
     ("experience_replay", 500),
     ("ewc", 0),
 }
+EXPECTED_METHOD_MEANS = {
+    "er500": 0.591408,
+    "er100": 0.318216,
+    "ewc": 0.196428,
+    "no_replay": 0.195824,
+}
+EXPECTED_FIGURES = {
+    "fig1_cell_faa_v2.png",
+    "fig2_faa_boxplot_v2.png",
+    "fig3_order_heatmap_v2.png",
+}
+PRIVATE_TOKENS = ("/home/", "/Users/", "silver", "miniconda")
 
 
 def rows(name: str) -> list[dict[str, str]]:
@@ -36,60 +49,80 @@ def assert_close(actual: float, expected: float, label: str, tol: float = 1e-12)
         raise AssertionError(f"{label}: {actual!r} != {expected!r}")
 
 
-def summarize_method_budget(formal: list[dict[str, str]]) -> dict[tuple[str, int], dict[str, float]]:
-    grouped: dict[tuple[str, int], list[dict[str, str]]] = defaultdict(list)
-    for row in formal:
-        grouped[(row["method"], int(row["memory_budget"]))].append(row)
-    out: dict[tuple[str, int], dict[str, float]] = {}
-    for key, vals in grouped.items():
-        acc = [float(v["final_average_accuracy"]) for v in vals]
-        forgetting = [float(v["average_forgetting"]) for v in vals]
-        out[key] = {
-            "n": float(len(vals)),
-            "mean_final_average_accuracy": mean(acc),
-            "std_final_average_accuracy": stdev(acc),
-            "mean_average_forgetting": mean(forgetting),
-            "std_average_forgetting": stdev(forgetting),
-        }
-    return out
+def assert_finite(rows_in: list[dict[str, str]], fields: list[str], label: str) -> None:
+    bad = []
+    for row in rows_in:
+        for field in fields:
+            value = float(row[field])
+            if not math.isfinite(value):
+                bad.append((row.get("seed"), row.get("order_id"), field))
+    if bad:
+        raise AssertionError(f"{label} non-finite values: {bad[:3]}")
 
 
-def summarize_order_regret(formal: list[dict[str, str]]) -> dict[tuple[str, int], dict[str, object]]:
-    grouped: dict[tuple[str, int], list[dict[str, str]]] = defaultdict(list)
+def assert_no_duplicate_keys(rows_in: list[dict[str, str]], fields: list[str], label: str) -> None:
+    keys = [tuple(row[field] for field in fields) for row in rows_in]
+    duplicate_count = len(keys) - len(set(keys))
+    if duplicate_count:
+        raise AssertionError(f"{label} duplicate keys: {duplicate_count}")
+
+
+def summarize_method_cells(formal: list[dict[str, str]]) -> dict[str, float]:
+    grouped: dict[str, list[float]] = defaultdict(list)
     for row in formal:
-        grouped[(row["method"], int(row["memory_budget"]))].append(row)
-    out: dict[tuple[str, int], dict[str, object]] = {}
-    for key, vals in grouped.items():
-        by_order: dict[str, list[float]] = defaultdict(list)
-        for row in vals:
-            by_order[row["order_id"]].append(float(row["final_average_accuracy"]))
-        order_means = {order: mean(values) for order, values in by_order.items()}
-        best = max(order_means, key=order_means.get)
-        worst = min(order_means, key=order_means.get)
-        out[key] = {
-            "best_order": best,
-            "worst_order": worst,
-            "order_regret": order_means[best] - order_means[worst],
-        }
-    return out
+        grouped[row["method_cell"]].append(float(row["final_average_accuracy"]))
+    return {key: mean(values) for key, values in grouped.items()}
+
+
+def assert_public_environment(env: dict[str, object]) -> None:
+    if "executable" in env:
+        raise AssertionError("environment snapshot exposes executable")
+    text = json.dumps(env, sort_keys=True)
+    hits = [token for token in PRIVATE_TOKENS if token in text]
+    if hits:
+        raise AssertionError(f"environment snapshot exposes private tokens: {hits}")
 
 
 def build_report() -> dict[str, object]:
     public_summary = read_json("public_summary.json")
-    formal_summary = read_json("formal_summary.json")
-    phase4 = read_json("phase4_rebuild_analysis_result.json")
-    formal = rows("formal_metrics.csv")
-    method_summary = rows("summary_by_method_budget.csv")
-    order_summary = rows("order_sensitivity.csv")
+    config = read_json("formal_results_v2_config.json")
+    lambda_selection = read_json("ewc_lambda_selection.json")
+    environment = read_json("environment_snapshot.json")
+    formal = rows("formal_results_v2.csv")
+    task_level = rows("bwt_task_level_v2.csv")
+    extended = rows("extended_budget_v2.csv")
+    lambda_rows = rows("ewc_lambda_search.csv")
 
     if len(formal) != 200:
         raise AssertionError(f"formal rows {len(formal)} != 200")
-    if formal_summary["actual_rows"] != 200 or formal_summary["expected_rows"] != 200:
-        raise AssertionError("formal summary row-count mismatch")
-    if public_summary["row_counts"]["formal_metrics_rows"] != 200:
-        raise AssertionError("public summary row-count mismatch")
-    if phase4["status"] != "PASS_SCIENTIFIC_GATE_ADEQUATE":
-        raise AssertionError("phase4 scientific gate did not pass")
+    if len(task_level) != 1000:
+        raise AssertionError(f"task-level rows {len(task_level)} != 1000")
+    if len(extended) != 300:
+        raise AssertionError(f"extended-budget rows {len(extended)} != 300")
+    if len(lambda_rows) != 35:
+        raise AssertionError(f"lambda-search rows {len(lambda_rows)} != 35")
+
+    row_counts = public_summary["row_counts"]
+    expected_counts = {
+        "formal_results_v2_rows": 200,
+        "bwt_task_level_v2_rows": 1000,
+        "extended_budget_v2_rows": 300,
+        "ewc_lambda_search_rows": 35,
+    }
+    for key, expected in expected_counts.items():
+        if row_counts[key] != expected:
+            raise AssertionError(f"{key}: {row_counts[key]} != {expected}")
+
+    if config["selected_epochs"] != 10:
+        raise AssertionError("selected_epochs mismatch")
+    if config["selected_batch_size"] != 128:
+        raise AssertionError("selected_batch_size mismatch")
+    if lambda_selection["selected_ewc_lambda"] != 100.0:
+        raise AssertionError("selected_ewc_lambda mismatch")
+    if public_summary["protocol"]["selected_epochs"] != 10:
+        raise AssertionError("public summary selected_epochs mismatch")
+    if public_summary["protocol"]["selected_batch_size"] != 128:
+        raise AssertionError("public summary selected_batch_size mismatch")
 
     seeds = {int(row["seed"]) for row in formal}
     orders = {row["order_id"] for row in formal}
@@ -101,61 +134,79 @@ def build_report() -> dict[str, object]:
     if method_budgets != EXPECTED_METHOD_BUDGETS:
         raise AssertionError(sorted(method_budgets))
 
-    keys = [(row["seed"], row["order_id"], row["method"], row["memory_budget"]) for row in formal]
-    duplicate_keys = len(keys) - len(set(keys))
-    if duplicate_keys:
-        raise AssertionError(f"duplicate keys {duplicate_keys}")
+    assert_no_duplicate_keys(
+        formal,
+        ["seed", "order_id", "method", "memory_budget"],
+        "formal_results_v2.csv",
+    )
+    assert_no_duplicate_keys(
+        task_level,
+        ["seed", "order_id", "method", "memory_budget", "task_id"],
+        "bwt_task_level_v2.csv",
+    )
+    assert_no_duplicate_keys(
+        extended,
+        ["seed", "order_id", "method", "memory_budget"],
+        "extended_budget_v2.csv",
+    )
+    assert_no_duplicate_keys(
+        lambda_rows,
+        ["seed", "order_id", "ewc_lambda"],
+        "ewc_lambda_search.csv",
+    )
 
-    numeric_fields = [
+    formal_numeric_fields = [
         "final_average_accuracy",
         "average_forgetting",
         "elapsed_seconds",
+        "A_after_mean",
+        "A_after_median",
+        "A_after_min",
         "task_0_final_accuracy",
         "task_1_final_accuracy",
         "task_2_final_accuracy",
         "task_3_final_accuracy",
         "task_4_final_accuracy",
     ]
-    bad_numeric = []
-    for row in formal:
-        for field in numeric_fields:
-            value = float(row[field])
-            if not math.isfinite(value):
-                bad_numeric.append((row["seed"], row["order_id"], row["method"], field))
-    if bad_numeric:
-        raise AssertionError(f"non-finite values: {bad_numeric[:3]}")
+    assert_finite(formal, formal_numeric_fields, "formal_results_v2.csv")
+    assert_finite(
+        task_level,
+        ["A_after", "A_final", "BWT", "forgetting", "processed_examples"],
+        "bwt_task_level_v2.csv",
+    )
+    assert_finite(extended, formal_numeric_fields, "extended_budget_v2.csv")
+    assert_finite(lambda_rows, formal_numeric_fields, "ewc_lambda_search.csv")
 
-    recomputed = summarize_method_budget(formal)
-    for row in method_summary:
-        key = (row["method"], int(row["memory_budget"]))
-        stats = recomputed[key]
-        assert_close(stats["n"], float(row["n"]), f"{key} n")
-        for field in [
-            "mean_final_average_accuracy",
-            "std_final_average_accuracy",
-            "mean_average_forgetting",
-            "std_average_forgetting",
-        ]:
-            assert_close(stats[field], float(row[field]), f"{key} {field}")
+    method_means = summarize_method_cells(formal)
+    for method_cell, expected in EXPECTED_METHOD_MEANS.items():
+        assert_close(round(method_means[method_cell], 6), expected, method_cell)
+        summary_value = public_summary["method_ranking"][method_cell]["mean_final_average_accuracy"]
+        assert_close(round(float(summary_value), 6), expected, f"summary {method_cell}")
 
-    recomputed_order = summarize_order_regret(formal)
-    for row in order_summary:
-        key = (row["method"], int(row["memory_budget"]))
-        stats = recomputed_order[key]
-        if stats["best_order"] != row["best_order"] or stats["worst_order"] != row["worst_order"]:
-            raise AssertionError(f"{key} best/worst order mismatch")
-        assert_close(float(stats["order_regret"]), float(row["order_regret"]), f"{key} order_regret")
+    figure_names = {path.name for path in FIGURES.iterdir() if path.is_file()}
+    if figure_names != EXPECTED_FIGURES:
+        raise AssertionError(f"figure set mismatch: {sorted(figure_names)}")
+    for figure in EXPECTED_FIGURES:
+        with (FIGURES / figure).open("rb") as handle:
+            if handle.read(8) != b"\x89PNG\r\n\x1a\n":
+                raise AssertionError(f"{figure} is not a PNG")
+
+    assert_public_environment(environment)
 
     return {
         "status": "PASS",
-        "formal_metrics_rows": len(formal),
+        "formal_results_v2_rows": len(formal),
+        "bwt_task_level_v2_rows": len(task_level),
+        "extended_budget_v2_rows": len(extended),
+        "ewc_lambda_search_rows": len(lambda_rows),
+        "selected_epochs": config["selected_epochs"],
+        "selected_batch_size": config["selected_batch_size"],
+        "selected_ewc_lambda": lambda_selection["selected_ewc_lambda"],
         "seeds": sorted(seeds),
         "orders": sorted(orders),
         "method_budgets": sorted([list(item) for item in method_budgets]),
-        "best_method": phase4["best_method"],
-        "best_memory_budget": phase4["best_memory_budget"],
-        "best_mean_final_average_accuracy": phase4["best_mean_final_average_accuracy"],
-        "largest_order_regret": public_summary["headline_values"]["largest_order_regret"],
+        "method_means": {key: round(value, 6) for key, value in sorted(method_means.items())},
+        "figures": sorted(figure_names),
     }
 
 

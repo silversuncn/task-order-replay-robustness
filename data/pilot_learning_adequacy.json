@@ -1,0 +1,23 @@
+{
+  "attempts": [
+    {
+      "A_after_le_0_001_count": 0,
+      "A_after_le_0_001_proportion": 0.0,
+      "batch_size": 128,
+      "epochs": 10,
+      "max_A_after": 1.0,
+      "mean_A_after": 0.9855099999999993,
+      "median_A_after": 0.99,
+      "min_A_after": 0.955,
+      "n_task_observations": 100,
+      "rows": 20,
+      "status": "PASS_LEARNING_ADEQUACY",
+      "task_rows": 100,
+      "threshold": 0.5
+    }
+  ],
+  "gate": "median A_after > 0.5",
+  "selected_batch_size": 128,
+  "selected_epochs": 10,
+  "status": "PASS_LEARNING_ADEQUACY"
+}

@@ -1,0 +1,41 @@
+{
+  "lambda_summary": [
+    {
+      "ewc_lambda": 1.0,
+      "mean_final_average_accuracy": 0.19628,
+      "n_runs": 5
+    },
+    {
+      "ewc_lambda": 5.0,
+      "mean_final_average_accuracy": 0.19640000000000002,
+      "n_runs": 5
+    },
+    {
+      "ewc_lambda": 10.0,
+      "mean_final_average_accuracy": 0.19628,
+      "n_runs": 5
+    },
+    {
+      "ewc_lambda": 25.0,
+      "mean_final_average_accuracy": 0.19604,
+      "n_runs": 5
+    },
+    {
+      "ewc_lambda": 50.0,
+      "mean_final_average_accuracy": 0.19619999999999999,
+      "n_runs": 5
+    },
+    {
+      "ewc_lambda": 100.0,
+      "mean_final_average_accuracy": 0.19676,
+      "n_runs": 5
+    },
+    {
+      "ewc_lambda": 500.0,
+      "mean_final_average_accuracy": 0.19651999999999997,
+      "n_runs": 5
+    }
+  ],
+  "selected_ewc_lambda": 100.0,
+  "selection_rule": "highest mean FAA across 1 seed x 5 orders; tie breaks to smaller lambda"
+}

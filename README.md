@@ -1,48 +1,40 @@
 # Task-Order Replay Robustness on Split-MNIST with Lightweight Continual MLPs
 
-> Yaowen Sun
+> **Task-Order Replay Robustness on Split-MNIST with Lightweight Continual MLPs**  
+> Yaowen Sun; Qian Zhang; Xin Zhang
 
 ## Overview
 
-This repository contains a sanitized reproduction bundle for a bounded continual-learning measurement study. The study evaluates how task order and replay memory budget affect a compact class-incremental MLP on Split-MNIST. It does not introduce a new continual-learning algorithm and does not make state-of-the-art claims.
-
-Repository URL: https://github.com/silversuncn/task-order-replay-robustness
+This repository contains a public verification bundle for a bounded continual-learning measurement study. The study evaluates how deterministic task order and replay memory budget affect a compact class-incremental MLP on Split-MNIST. It does not introduce a new continual-learning algorithm and does not make state-of-the-art claims.
 
 ## Repository Structure
 
 ```text
 .
 |-- README.md
-|-- CITATION.cff
 |-- LICENSE
+|-- MANIFEST.txt
+|-- SHA256SUMS
 |-- requirements.txt
 |-- data/
+|   |-- README.md
+|   |-- bwt_task_level_v2.csv
+|   |-- environment_snapshot.json
+|   |-- ewc_lambda_search.csv
+|   |-- ewc_lambda_selection.json
+|   |-- extended_budget_v2.csv
+|   |-- fisher_empirical_vs_batch_mean_square.json
+|   |-- formal_results_v2.csv
+|   |-- formal_results_v2_config.json
+|   |-- pilot_learning_adequacy.json
 |   |-- public_summary.json
-|   |-- formal_metrics.csv
-|   |-- formal_summary.json
-|   |-- summary_by_method_budget.csv
-|   |-- order_sensitivity.csv
-|   |-- phase4_rebuild_analysis_result.json
-|   `-- revision_experiments_20260812/
-|       |-- backward_transfer_summary.json
-|       |-- backward_transfer_retention_repair_diagnostics.json
-|       |-- fisher_variance_summary.json
-|       |-- ewc_fisher_batch_summary.json
-|       |-- budget_scaling_summary.json
-|       `-- order_effect_by_budget.json
+|   `-- statistical_analysis_v2.json
 |-- figures/
-|   |-- method_final_accuracy.png
-|   |-- method_average_forgetting.png
-|   `-- order_sensitivity.png
+|   |-- fig1_cell_faa_v2.png
+|   |-- fig2_faa_boxplot_v2.png
+|   `-- fig3_order_heatmap_v2.png
 |-- src/
-|   |-- run_split_mnist_replay_pipeline.py
-|   |-- analyze_split_mnist_replay_results.py
-|   |-- verify_public_results.py
-|   `-- revision/
-|       |-- run_backward_transfer_analysis.py
-|       |-- run_fisher_variance_analysis.py
-|       |-- run_ewc_more_fisher_batches.py
-|       `-- run_extended_budget_order.py
+|   `-- verify_public_results.py
 `-- tests/
     `-- test_public_results.py
 ```
@@ -63,31 +55,26 @@ Row-count check:
 10 seeds x 5 task orders x 4 method-budget cells = 200 runs
 ```
 
-The formal run caps MNIST at 1000 training examples and 500 test examples per digit. Training uses two epochs per task, batch size 512, Adam with learning rate `1e-3`, and a single-head 10-class output.
+The formal grid caps MNIST at 1000 training examples and 500 test examples per digit. Training uses 10 epochs per task, batch size 128, Adam with learning rate `1e-3`, and a single-head 10-class output. The EWC penalty uses corrected empirical per-sample squared gradients with selected lambda `100.0`.
 
 ## Hardware and Environment
 
-The recorded formal matrix ran on CUDA device `cuda:0` with an NVIDIA RTX PRO 6000 Blackwell Workstation Edition GPU. The recorded software environment was PyTorch `2.11.0+cu128` with CUDA `12.8`.
+The recorded grid used CUDA device `cuda:0` with an NVIDIA RTX PRO 6000 Blackwell Workstation Edition GPU. The recorded software environment was Python `3.11.15`, PyTorch `2.11.0+cu128`, torchvision `0.26.0+cu128`, and CUDA `12.8`. The bundled `data/environment_snapshot.json` removes private executable paths.
 
-CPU execution is sufficient for the verification script and unit tests. Re-running the full training pipeline requires installing PyTorch and torchvision and downloading MNIST through torchvision.
+CPU execution is sufficient for the verification script and unit tests because they read and check bundled CSV/JSON files only.
 
 ## Key Results
 
-- The formal matrix completed all 200 expected rows with zero duplicate keys and zero NaN or infinite metric values.
-- Experience replay with memory budget 500 achieved the highest mean final average accuracy: `0.233184`.
-- The gain of experience replay with memory budget 500 over no replay was `0.058940`.
-- EWC had nearly the same mean final average accuracy as no replay: `0.174440` versus `0.174244`.
-- EWC reduced mean average forgetting by only `0.000670` versus no replay.
-- The largest task-order regret was `0.110680` for experience replay with memory budget 500.
-- Revision diagnostics separate BWT from retention instability: mean BWT is
-  negative for all tested method-budget cells, Fisher-batch expansion changes
-  EWC mean accuracy by at most `0.000016`, and an extended replay-budget grid
-  reaches mean accuracy `0.275208` at budget 1000 while preserving a best-worst
-  task-order gap of `0.177960`.
+- The formal grid completed all 200 expected run rows with zero duplicate keys and zero non-finite metric values.
+- The task-level backward-transfer table contains 1,000 rows, the extended-budget diagnostic contains 300 rows, and the EWC lambda-search table contains 35 rows.
+- Mean final average accuracy by method-budget cell is ER500 `0.591408`, ER100 `0.318216`, EWC `0.196428`, and NoReplay `0.195824`.
+- ER500 improves over NoReplay by `0.395584`; ER100 improves over NoReplay by `0.122392`.
+- EWC with selected lambda `100.0` is statistically positive but numerically close to NoReplay in this grid.
+- The largest task-order regret is `0.134` for ER500, smaller than the ER500-NoReplay method benefit in this measured grid.
 
 These are finite-grid claims about this Split-MNIST compact-MLP setup only.
 
-## Reproduce and Verify
+## Verify
 
 Verify the bundled public results using only the Python standard library:
 
@@ -96,25 +83,24 @@ python3 src/verify_public_results.py
 python3 -m unittest discover -s tests -q
 ```
 
-To rerun the training pipeline, install the requirements and run the formal mode:
+The verifier checks row counts, protocol values, selected lambda, finite metrics, duplicate keys, method means, figure presence, and removal of private local paths from the bundled environment snapshot.
 
-```bash
-python3 src/run_split_mnist_replay_pipeline.py --mode formal --output-dir outputs/formal --data-dir torchvision_data
-python3 src/analyze_split_mnist_replay_results.py --metrics outputs/formal/metrics.csv --output-dir outputs/formal/analysis --figures-dir figures
-```
+## Requirements
 
-The bundled `data/` files are the archived formal-run artifacts used by the manuscript.
+The bundled verifier uses the Python standard library. Re-running training or
+figure generation requires the packages listed in `requirements.txt`, including
+PyTorch and torchvision.
 
 ## Citation
 
 ```bibtex
-@article{sun2026taskorderreplayrobustness,
+@misc{sun2026taskorderreplayrobustness,
   title = {Task-Order Replay Robustness on Split-MNIST with Lightweight Continual MLPs},
-  author = {Sun, Yaowen},
+  author = {Sun, Yaowen and Zhang, Qian and Zhang, Xin},
   year = {2026}
 }
 ```
 
 ## License
 
-This reproduction bundle is released under the license included in `LICENSE`.
+This public verification bundle is released under the license included in `LICENSE`.

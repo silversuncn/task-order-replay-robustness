@@ -1,5 +1,0 @@
-method,memory_budget,best_order,worst_order,order_regret,order_mean_canonical,order_mean_shuffle_0,order_mean_shuffle_1,order_mean_shuffle_2,order_mean_shuffle_3
-ewc,0,canonical,shuffle_3,0.04264000000000001,0.1985,0.16996,0.15804,0.18984,0.15586
-experience_replay,100,canonical,shuffle_1,0.06159999999999999,0.1923,0.19214,0.1307,0.1787,0.17071999999999998
-experience_replay,500,canonical,shuffle_1,0.11068,0.26754,0.23596,0.15686,0.257,0.24856
-no_replay,0,canonical,shuffle_1,0.03744,0.19654,0.16724,0.1591,0.18919999999999998,0.15914
