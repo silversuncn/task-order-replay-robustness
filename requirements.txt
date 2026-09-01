@@ -1,1 +1,9 @@
-# No third-party packages are required for bundled-result verification.
+# Recorded WSL environment versions:
+# torch 2.11.0+cu128; torchvision 0.26.0+cu128; numpy 2.4.4;
+# pandas 3.0.1; scipy 1.17.1; matplotlib 3.10.8.
+torch>=2.11
+torchvision>=0.26
+numpy>=2.4
+pandas>=3.0
+scipy>=1.17
+matplotlib>=3.10

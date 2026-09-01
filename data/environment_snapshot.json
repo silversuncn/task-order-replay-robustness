@@ -18,50 +18,15 @@
       "er500",
       "ewc"
     ],
+    "compute_matched_method": "er500_matched",
     "mnist_download": false,
     "model_architecture": "784 -> 256 -> 128 -> 10 single-head MLP",
     "optimizer": "Adam lr=1e-3",
-    "task_orders": {
-      "canonical": [
-        0,
-        1,
-        2,
-        3,
-        4
-      ],
-      "shuffle_0": [
-        2,
-        3,
-        1,
-        0,
-        4
-      ],
-      "shuffle_1": [
-        1,
-        0,
-        2,
-        4,
-        3
-      ],
-      "shuffle_2": [
-        2,
-        3,
-        0,
-        4,
-        1
-      ],
-      "shuffle_3": [
-        1,
-        2,
-        0,
-        3,
-        4
-      ]
-    },
+    "task_orders": "all 120 permutations of five Split-MNIST tasks",
     "test_cap_per_digit": 500,
     "train_cap_per_digit": 1000
   },
-  "created_at": "2026-08-30T16:08:20+0800",
+  "created_at": "2026-09-01T22:44:00+0800",
   "cuda_available": true,
   "deterministic_settings": {
     "torch_are_deterministic_algorithms_enabled": false,
@@ -80,7 +45,7 @@
   },
   "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
   "processor": "x86_64",
-  "python": "3.11.15 (main, Mar 11 2026, 17:20:07) [GCC 14.3.0]",
+  "python": "3.11.15",
   "selected_device": "cuda:0",
   "torch_cuda_version": "12.8"
 }

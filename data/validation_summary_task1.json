@@ -1,0 +1,53 @@
+{
+  "buffer_rows": 18000,
+  "expected_buffer_rows": 18000,
+  "full": {
+    "actual_method_cells": [
+      "er100",
+      "er500",
+      "ewc",
+      "no_replay"
+    ],
+    "actual_rows": 4800,
+    "duplicate_key_count": 0,
+    "expected_method_cells": [
+      "er100",
+      "er500",
+      "ewc",
+      "no_replay"
+    ],
+    "expected_rows": 4800,
+    "failure_count": 0,
+    "failures": [],
+    "order_count": 120,
+    "seed_count": 10,
+    "status": "PASS"
+  },
+  "legacy_comparison": {
+    "comparison_csv": "../raw_data/task1_120perm_compute_matched_20260901/legacy_formal_comparison.csv",
+    "comparison_rows": 200,
+    "formal_rows": 200,
+    "max_abs_metric_diff": 0.0,
+    "mismatched_field_count": 0,
+    "missing_generated_rows": 0,
+    "status": "PASS_EXACT_LEGACY_MATCH",
+    "tolerance": 1e-12
+  },
+  "matched": {
+    "actual_method_cells": [
+      "er500_matched"
+    ],
+    "actual_rows": 1200,
+    "duplicate_key_count": 0,
+    "expected_method_cells": [
+      "er500_matched"
+    ],
+    "expected_rows": 1200,
+    "failure_count": 0,
+    "failures": [],
+    "order_count": 120,
+    "seed_count": 10,
+    "status": "PASS"
+  },
+  "status": "PASS"
+}
